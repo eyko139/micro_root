@@ -29,3 +29,13 @@ jobs:
       with:
         inlineScript: |
             az storage blob upload-batch --account-name talkstorage7443 --auth-mode key -d javascript --source dist --destination-path "${{ steps.vars.outputs.sha_short }}-root"
+
+    - name: update import map
+      run: |
+          curl --location --request PATCH 'http://imd.602492b207e34b7bbd7e.germanywestcentral.aksapp.io/services?env=prod' \
+          --header 'Accept: application/json' \
+          --header 'Content-Type: application/json' \
+          --data-raw '{
+           "service": "@talk/root",
+           "url": "https://javascript-frontdoor-gucte0ayg8f9f9ej.z01.azurefd.net/javascript/${{ steps.vars.outputs.sha_short }}/talk-root-config.js"
+           }'
