@@ -36,6 +36,6 @@ jobs:
           --header 'Accept: application/json' \
           --header 'Content-Type: application/json' \
           --data-raw '{
-           "service": "@talk/root",
+           "service": "@talk/root-config",
            "url": "https://javascript-frontdoor-gucte0ayg8f9f9ej.z01.azurefd.net/javascript/${{ steps.vars.outputs.sha_short }}-root/talk-root-config.js"
            }'
