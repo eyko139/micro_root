@@ -19,8 +19,6 @@ jobs:
       run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
     - name: Check outputs
       run: echo ${{ steps.vars.outputs.sha_short }}
-    - name: Rename files
-      run: mv dist ${{ steps.vars.outputs.sha_short }}-root
     - uses: azure/login@v1
       with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
@@ -30,4 +28,4 @@ jobs:
       uses: azure/CLI@v1
       with:
         inlineScript: |
-            az storage blob upload-batch --account-name talkstorage7443 --auth-mode key -d 'javascript' -s "${{ steps.vars.outputs.sha_short }}-root"
+            az storage blob upload-batch --account-name talkstorage7443 --auth-mode key -d 'javascript' -s 'root' --destination-path "${{ steps.vars.outputs.sha_short }}-root"
