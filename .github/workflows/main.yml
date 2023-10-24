@@ -23,13 +23,4 @@ jobs:
       uses: azure/CLI@v1
       with:
         inlineScript: |
-            az storage blob upload-batch --account-name talkstorage7443 --auth-mode key -d 'javascript' -s .
-    - name: Purge CDN endpoint
-      uses: azure/CLI@v1
-      with:
-        inlineScript: |
-           az cdn endpoint purge --content-paths  "/*" --profile-name "javascript-frontdoor" --name "javascript-frontdoor-gucte0ayg8f9f9ej.z01.azurefd.net" --resource-group "talk_group"
-    - name: logout
-      run: |
-            az logout
-      if: always()
+            az storage blob upload-batch --account-name talkstorage7443 --auth-mode key -d 'javascript' -s "dist"
