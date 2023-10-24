@@ -21,10 +21,11 @@ jobs:
       run: echo ${{ steps.vars.outputs.sha_short }}
     - name: Rename files
       run: |
-          for f in dist/*; do
+          cd dist
+          for f in *; do
               mv -- "$f" "${{ steps.vars.outputs.sha_short }}-${f}"
-          done
-
+           done
+          cd ..
     - uses: azure/login@v1
       with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
