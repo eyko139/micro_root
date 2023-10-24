@@ -28,4 +28,4 @@ jobs:
       uses: azure/CLI@v1
       with:
         inlineScript: |
-            az storage blob upload-batch --account-name talkstorage7443 --auth-mode key -d javascript --source root --destination-path "${{ steps.vars.outputs.sha_short }}-root"
+            az storage blob upload-batch --account-name talkstorage7443 --auth-mode key -d javascript --source dist --destination-path "${{ steps.vars.outputs.sha_short }}-root"
