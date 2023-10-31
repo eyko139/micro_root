@@ -39,3 +39,43 @@ jobs:
            "service": "@talk/root-config",
            "url": "https://javascript-frontdoor-gucte0ayg8f9f9ej.z01.azurefd.net/javascript/${{ steps.vars.outputs.sha_short }}-root/talk-root-config.js"
            }'
+    - name: 'Build and push image'
+      uses: azure/docker-login@v1
+      with:
+        login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
+        username: ${{ secrets.REGISTRY_USERNAME }}
+        password: ${{ secrets.REGISTRY_PASSWORD }}
+    - run: |
+        docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/rootfrontend:${{ github.sha }}
+        docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/rootfrontend:${{ github.sha }}
+
+    - name: 'Deploy to Azure Container Instances'
+      uses: 'azure/aci-deploy@v1'
+      with:
+        resource-group: ${{ secrets.RESOURCE_GROUP }}
+        dns-name-label: namelabeltest
+        image: ${{ secrets.REGISTRY_LOGIN_SERVER }}/rootfrontend:${{ github.sha }}
+        registry-login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
+        registry-username: ${{ secrets.REGISTRY_USERNAME }}
+        registry-password: ${{ secrets.REGISTRY_PASSWORD }}
+        name: root-frontend
+        location: 'germanywestcentral'
+    - name: Set AKS context
+      id: set-context
+      uses: azure/aks-set-context@v3
+      with:
+        resource-group: ${{ secrets.resource_group }}
+        cluster-name: talk
+    - name: Setup kubectl
+      id: install-kubectl
+      uses: azure/setup-kubectl@v3
+    - uses: Azure/k8s-create-secret@v1.1
+      with:
+        container-registry-url: talkcontainers.azurecr.io
+        container-registry-username: ${{ secrets.REGISTRY_USERNAME }}
+        container-registry-password: ${{ secrets.REGISTRY_PASSWORD }}
+        secret-name: demo-k8s-secret
+    - name: Run kubectl
+      run: |
+        kubectl get deploy
+        kubectl set image deployment/root-frontend-deployment container-root=talkcontainers.azurecr.io/containerfrontend:${{ github.sha }}

@@ -32,15 +32,6 @@
 
     More information about shared dependencies can be found at https://single-spa.js.org/docs/recommended-setup#sharing-with-import-maps.
   -->
-  <script type="systemjs-importmap">
-    {
-      "imports": {
-        "react": "https://cdn.jsdelivr.net/npm/react@17.0.2/umd/react.production.min.js",
-        "react-dom": "https://cdn.jsdelivr.net/npm/react-dom@17.0.2/umd/react-dom.production.min.js",
-        "single-spa": "https://cdn.jsdelivr.net/npm/single-spa@5.9.0/lib/system/single-spa.min.js"
-      }
-    }
-  </script>
   <link rel="preload" href="https://cdn.jsdelivr.net/npm/single-spa@5.9.0/lib/system/single-spa.min.js" as="script">
 
   <!-- Add your organization's prod import map URL to this script's src  -->
@@ -50,9 +41,8 @@
    <script type="systemjs-importmap">
      { 
        "imports": { 
-          "@talk/root-config": "//localhost:9000/talk-root-config.js",
-          "@talk/container": "//localhost:3000/talk-container.js"
-       } 
+          "@talk/root-config": "//localhost:9000/talk-root-config.js"
+       }
      } 
    </script> 
    <% } %> 
